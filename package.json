@@ -1,0 +1,19 @@
+{
+  "name": "home",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "koa": "^2.15.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
