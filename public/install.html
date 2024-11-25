@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>安装与配置</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="./plugin/element-plus/index.css">
+    <style>
+        html,
+        body {
+            background: url(./images/background.png);
+            color: #FFF;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body .loading {
+            display: none;
+        }
+
+        body.hide * {
+            display: none;
+        }
+
+        body.hide .loading {
+            display: block;
+        }
+
+        .el-form-item__label {
+            color: #FFF;
+        }
+
+        .buttons .el-form-item__content {
+            justify-content: center;
+        }
+    </style>
+
+</head>
+
+<body class="hide">
+    <div class="loading">加载中请稍后...</div>
+    <header>
+        <h1>安装与配置</h1>
+    </header>
+    <section>
+        <el-form :model="form" :rules="rules" ref="formEl" label-width="auto">
+            <el-form-item label="管理员账号" prop="username">
+                <el-input v-model="form.username" @keyup.enter="onSubmit" required />
+            </el-form-item>
+            <el-form-item label="管理员密码" prop="password">
+                <el-input v-model="form.password" @keyup.enter="onSubmit" type="password" required />
+            </el-form-item>
+            <el-form-item class="buttons">
+                <el-button type="primary" @click="onSubmit">安装</el-button>
+            </el-form-item>
+        </el-form>
+    </section>
+    <script src="./plugin/vue/vue.global.prod.js"></script>
+    <script src="./plugin/element-plus/index.full.min.js"></script>
+    <script type="module">
+        import View from "./plugin/vue/View.js";
+        View.create({
+            data() {
+                return {
+
+                    form: {
+                        username: '',
+                        password: ''
+                    },
+                    rules: {
+                        username: [
+                            { required: true, message: '请输入管理员账号', trigger: 'blur' },
+                        ],
+                        password: [
+                            { required: true, message: '请输入管理员密码', trigger: 'blur' },
+                        ],
+                    }
+                };
+            },
+            created() {
+                document.body.className = '';
+            },
+            methods: {
+                async onSubmit() {
+                    const loading = ElementPlus.ElLoading.service({
+                        lock: true,
+                        text: '正在配置服务器, 请稍后...',
+                        background: 'rgba(0, 0, 0, 0.7)',
+                    });
+
+                    var valid = await this.$refs.formEl.validate(() => { });
+                    if (!valid) {
+                        loading.close();
+                        return;
+                    }
+                    var res = await fetch('/install/config', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(this.form)
+                    });
+                    var result = await res.json();
+                    if (result.status == 200) {
+                        loading.close();
+                        window.location.href = '/';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

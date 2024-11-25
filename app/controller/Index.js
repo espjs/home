@@ -8,8 +8,12 @@ class Index {
         this.next = next;
     }
 
-    async index(name = 123, message = "sdfsdfsd") {
-        this.ctx.body = 'Hello ' + name + ' ' + message;
+    async index(Helper) {
+        if (!Helper.installed()) {
+            return '<script>window.location.href="/install";</script>';
+        }
+
+        return 'Hello World!';
     }
 }
 
