@@ -1,19 +1,16 @@
-class Index {
+const Controller = require('./Controller');
 
-    ctx = null;
-    next = null;
-
-    constructor(ctx, next) {
-        this.ctx = ctx;
-        this.next = next;
-    }
+class Index extends Controller {
 
     async index(Helper) {
         if (!Helper.installed()) {
             return '<script>window.location.href="/install";</script>';
         }
 
-        return 'Hello World!';
+        var User = require('../model/User');
+        var admin = await User.get(1);
+        console.log(admin);
+        return this.view('index');
     }
 }
 

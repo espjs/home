@@ -4,6 +4,7 @@ const config = require('../app/config/all');
 const Sqlite = require('./db/Sqlite');
 const staticFile = require('koa-static');
 const bodyParser = require('koa-bodyparser');
+
 module.exports = class App {
 
     koa = null;
@@ -14,6 +15,7 @@ module.exports = class App {
         global.APP_DIR = global.ROOT_DIR + '/app';
         global.CORE_DIR = global.ROOT_DIR + '/core';
         global.PUBLIC_DIR = global.ROOT_DIR + '/public';
+        global.DATA_DIR = global.ROOT_DIR + '/data';
     }
 
     run(port) {
@@ -62,9 +64,8 @@ module.exports = class App {
                     break;
                 case 'db' == paramName:
                     if (typeof params['db'] === 'undefined') {
-                        var filename = config.db.filename.replace('@', global.ROOT_DIR);
-                        var db = new Sqlite(filename)
-                        paramsList.push(db);
+                        var db = require('./db/Database');
+                        paramsList.push(db());
                     } else {
                         paramsList.push(params['db']);
                     }

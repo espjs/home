@@ -21,4 +21,9 @@ module.exports = class Controller {
         this.ctx.headers['Content-Type'] = 'application/json';
     }
 
+    view(path) {
+        var fs = require('fs');
+        return fs.readFileSync(global.APP_DIR + '/view/' + path + '.html', 'utf8');
+    }
+
 }

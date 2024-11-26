@@ -43,11 +43,13 @@ class Sqlite {
         if (callback) {
             callback(result);
         }
+        return result;
     }
 
-    async all(sql, param, callback = null) {
+    async all(sql, param = [], callback = null) {
+        var self = this;
         var result = await new Promise((resolve, reject) => {
-            this.db.all(sql, param, (err, rows) => {
+            self.db.all(sql, param, (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
@@ -58,7 +60,7 @@ class Sqlite {
         if (callback) {
             callback(result);
         }
-
+        return result;
     }
 
 }
