@@ -6,10 +6,6 @@ class Index extends Controller {
         if (!Helper.installed()) {
             return '<script>window.location.href="/install";</script>';
         }
-
-        var User = require('../model/User');
-        var admin = await User.get(1);
-        console.log(admin);
         return this.view('index');
     }
 }

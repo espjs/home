@@ -1,8 +1,11 @@
 class Model {
 
-    table = '';
-    constructor() {
-        this.table = this.constructor.name.replace(/([^\b][A-Z])/g, "_$1").toLowerCase();
+    _tableName = '';
+    _data = {};
+
+    constructor(data) {
+        this._tableName = this.getTableName();
+        this._data = data;
     }
 
     static db() {
@@ -14,64 +17,26 @@ class Model {
         return this.name.replace(/([^\b][A-Z])/g, "_$1").toLowerCase();
     }
 
+    static where(...params) {
+        return this.query().where(...params);
+    }
+
+    static order(...params) {
+        return this.query().order(...params);
+    }
+
+    static async all() {
+        this.query().all();
+    }
+
     static async get(id) {
-        var table = this.getTableName();
-        console.log(table);
-        return await this.db().get(`SELECT * FROM ${table} WHERE id = ?`, [id]);
+        return await this.query().get(id);
     }
 
     static query() {
-        return new Query(this.getTableName());
+        return this.db().query(this.getTableName());
     }
 
-}
-
-class Query {
-
-    table = '';
-    pk = 'id';
-
-    constructor(table) {
-        this.table = table;
-    }
-    params = {
-        'where': [],
-        'order': [],
-        'limit': [],
-        'offset': [],
-    }
-
-    where(key, value) {
-        this.params.where.push([key, value]);
-        return this;
-    }
-
-    order(key, value) {
-
-    }
-    limit(value) {
-
-    }
-
-    offset(value) {
-
-    }
-
-    async get() {
-
-    }
-
-    async all() {
-
-    }
-
-    async save(data) {
-
-    }
-
-    async delete() {
-
-    }
 }
 
 module.exports = Model;
