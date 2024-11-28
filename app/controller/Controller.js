@@ -7,23 +7,33 @@ module.exports = class Controller {
         this.next = next;
     }
 
+    status(code = 200) {
+        this.ctx.response.status = code;
+        return this;
+    }
+
     success(body) {
-        this.ctx.body = body;
+        return body;
     }
 
     error(message, code = 500) {
-        this.ctx.status = code;
-        this.ctx.body = message;
+        this.ctx.response.status = code;
+        return message;
     }
 
-    json(body) {
-        this.ctx.body = body;
-        this.ctx.headers['Content-Type'] = 'application/json';
+    json(body, code = 200) {
+        this.ctx.response.status = code;
+        this.ctx.set('Content-Type', 'application/json; charset=utf-8');
+        var result = JSON.stringify(body);
+        return result;
     }
 
-    view(path) {
+    view(path, code = 200) {
         var fs = require('fs');
-        return fs.readFileSync(global.APP_DIR + '/view/' + path + '.html', 'utf8');
+        this.ctx.response.status = code;
+        this.ctx.set('Content-Type', 'text/html; charset=utf-8');
+        var template = fs.readFileSync(global.APP_DIR + '/view/' + path + '.html', 'utf8')
+        return template;
     }
 
 }
