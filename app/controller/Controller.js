@@ -12,13 +12,12 @@ module.exports = class Controller {
         return this;
     }
 
-    success(body) {
-        return body;
+    success(data) {
+        return this.json(data);
     }
 
-    error(message, code = 500) {
-        this.ctx.response.status = code;
-        return message;
+    error(message, code = 400) {
+        return this.json(message, code);
     }
 
     json(body, code = 200) {
@@ -29,11 +28,14 @@ module.exports = class Controller {
     }
 
     view(path, code = 200) {
-        var fs = require('fs');
         this.ctx.response.status = code;
         this.ctx.set('Content-Type', 'text/html; charset=utf-8');
-        var template = fs.readFileSync(global.APP_DIR + '/view/' + path + '.html', 'utf8')
-        return template;
+        var path = global.APP_DIR + '/view/' + path + '.html';
+        var fs = require('fs');
+        if (fs.existsSync(path)) {
+            return fs.readFileSync(path, 'utf8');
+        }
+        return '模板不存在!';
     }
 
 }

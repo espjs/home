@@ -30,6 +30,11 @@ class Query {
         return this;
     }
 
+    field(field) {
+        this._params.field = field;
+        return this;
+    }
+
     result(result) {
         this._result = result;
         return this;

@@ -29,7 +29,7 @@ module.exports = class App {
 
     async router(ctx, next) {
         var [controller, action] = App.parseRouter(ctx, next);
-        if (controller === null) {
+        if (controller === null || !controller[action]) {
             ctx.body = '404';
             ctx.status = 404;
             return;
@@ -86,12 +86,21 @@ module.exports = class App {
                     if (params[paramName] !== undefined) {
                         paramsList.push(params[paramName]);
                     } else {
+
+                        var model = global.APP_DIR + '/model/' + paramName + '.js';
+                        if (fs.existsSync(model)) {
+                            paramsList.push(require(model));
+                            continue;
+                        }
+
                         var injectionPath = global.APP_DIR + '/injection/' + paramName + '.js';
                         if (fs.existsSync(injectionPath)) {
                             paramsList.push(require(injectionPath));
-                        } else {
-                            paramsList.push(def);
+                            continue;
                         }
+
+                        paramsList.push(def);
+
                     }
                     break;
             }

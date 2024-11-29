@@ -8,7 +8,7 @@ CREATE TABLE "user" (
   "update_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO user (username, password, status) values ('{$username}', '{$password}', '正常');
+INSERT INTO user (username, password, status) VALUES ('{$username}', '{$password}', '正常');
 
 CREATE TABLE "device" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,3 +36,16 @@ CREATE TABLE "template" (
   "create_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   "update_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE "room" (
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "name" TEXT,
+  "sort" integer
+);
+
+INSERT INTO room ("name", "sort") VALUES ("卧室", 2);
+INSERT INTO room ("name", "sort") VALUES ("客厅", 3);
+INSERT INTO room ("name", "sort") VALUES ("厨房", 4);
+INSERT INTO room ("name", "sort") VALUES ("院子", 5);
+INSERT INTO room ("name", "sort") VALUES ("阳台", 6);
+INSERT INTO room ("name", "sort") VALUES ("办公室", 7);
