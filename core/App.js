@@ -147,7 +147,7 @@ module.exports = class App {
         var result = str.replace(/_(\w)/g, function (all, letter) {
             return letter.toUpperCase();
         });
-        result.substring(0, 1).toUpperCase() + result.substring(1);
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
         return result;
     }
 
