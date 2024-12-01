@@ -4,7 +4,7 @@ class Index extends Controller {
 
     async index(Helper) {
         if (!Helper.installed()) {
-            return '<script>window.location.href="/install";</script>';
+            return this.redirect('/install');
         }
         return this.view('index');
     }

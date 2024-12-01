@@ -16,6 +16,11 @@ module.exports = class Controller {
         return this.json(data);
     }
 
+    redirect(url) {
+        this.ctx.response.redirect(url);
+        return '';
+    }
+
     error(message, code = 400) {
         return this.json(message, code);
     }

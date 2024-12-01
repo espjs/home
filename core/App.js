@@ -37,9 +37,16 @@ module.exports = class App {
 
         var paramsList = App.paramsInjection(controller[action], ctx, next);
 
-        var result = await controller[action](...paramsList);
-        if (result !== undefined) {
-            ctx.body = result;
+        try {
+            var result = await controller[action](...paramsList);
+            if (result !== undefined) {
+                ctx.body = result;
+            }
+        } catch (e) {
+            console.log(e);
+            ctx.body = e.message;
+            ctx.status = 500;
+            return;
         }
     }
 
