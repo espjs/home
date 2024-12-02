@@ -12,11 +12,25 @@ class Model {
 
         if (data) {
             this._data = data;
-            for (var key in this._data) {
-                this.defineProperty(key);
-
-            }
         }
+
+        return new Proxy(this, {
+            get: function (target, key) {
+                if (key in target) {
+                    return target[key];
+                }
+                return target._data[key];
+            },
+            set: function (target, key, value) {
+                if (key in target) {
+                    target[key] = value;
+                } else {
+                    target._data[key] = value;
+                }
+                return true;
+            }
+        })
+
     }
 
     db() {
@@ -85,11 +99,14 @@ class Model {
         })
     }
 
-    save(data = null) {
+    async save(data = null) {
+        var result = null;
         if (data) {
-            this._data = { ...this._data, ...data };
+            data[this._pk] = this._data[this._pk];
+        } else {
+            data = {...this._data};
         }
-        var result = this._query().save(this._data);
+        result = await this._query().save(data);
         return result;
     }
 
@@ -106,6 +123,10 @@ class Model {
 
     static async delete(id) {
         return await this.query().where((new this)._pk, id).delete();
+    }
+
+    *[Symbol.iterator]() {
+        yield* Object.keys(this._data);
     }
 
 }

@@ -16,7 +16,7 @@ class Helper {
     }
 
     static makeToken() {
-        return Helper.md5(Math.random() + new Date().getTime());
+        return Helper.md5(Math.random() + new Date().getTime() + '');
     }
 
     static getTime() {
