@@ -36,9 +36,6 @@ jobs:
           linux/arm/v7
           linux/arm64
           linux/arm64/v8
-          linux/mips64le
-          linux/ppc64le
-          linux/s390x
         push: true
         tags: espjs/home:latest
 
@@ -53,9 +50,6 @@ jobs:
           linux/arm/v7
           linux/arm64
           linux/arm64/v8
-          linux/mips64le
-          linux/ppc64le
-          linux/s390x
         file: DockerfileDev
         push: true
         tags: espjs/home:dev
