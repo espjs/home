@@ -32,7 +32,6 @@ jobs:
         platforms: |
           linux/386
           linux/amd64
-          linux/arm64
         push: true
         tags: espjs/home:latest
 
@@ -43,7 +42,6 @@ jobs:
         platforms: |
           linux/386
           linux/amd64
-          linux/arm64
         file: DockerfileDev
         push: true
         tags: espjs/home:dev
